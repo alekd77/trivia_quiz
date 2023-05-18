@@ -1,0 +1,25 @@
+# JavaFX build output
+build/
+out/
+
+# IDE-specific files and directories
+.idea/
+*.iml
+
+# Maven build output
+target/
+*/target/
+
+# Maven-specific files and directories
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# JavaFX-specific files and directories
+src/main/resources/fxml/
+src/main/resources/css/
+src/main/resources/images/
