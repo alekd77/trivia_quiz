@@ -1,4 +1,6 @@
-package com.triviagame.triviagame.database.trivia.opentriviadb.exception;
+package com.triviagame.triviagame.database.trivia.exception.impl.opentriviadbexception;
+
+import com.triviagame.triviagame.database.trivia.exception.impl.opentriviadbexception.OpenTriviaDBAPIException;
 
 public class OpenTriviaDBAPIInvalidParameterException extends OpenTriviaDBAPIException {
     public OpenTriviaDBAPIInvalidParameterException() {

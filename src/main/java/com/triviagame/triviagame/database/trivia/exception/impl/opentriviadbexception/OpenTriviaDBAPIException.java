@@ -1,6 +1,6 @@
-package com.triviagame.triviagame.database.trivia.opentriviadb.exception;
+package com.triviagame.triviagame.database.trivia.exception.impl.opentriviadbexception;
 
-import com.triviagame.triviagame.database.trivia.TriviaDBException;
+import com.triviagame.triviagame.database.trivia.exception.TriviaDBException;
 
 public class OpenTriviaDBAPIException extends TriviaDBException {
     public OpenTriviaDBAPIException() {

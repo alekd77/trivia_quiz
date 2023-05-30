@@ -1,4 +1,6 @@
-package com.triviagame.triviagame.database.trivia.opentriviadb.exception;
+package com.triviagame.triviagame.database.trivia.exception.impl.opentriviadbexception;
+
+import com.triviagame.triviagame.database.trivia.exception.impl.opentriviadbexception.OpenTriviaDBAPIException;
 
 public class OpenTriviaDBAPITokenNotFoundException extends OpenTriviaDBAPIException {
     public OpenTriviaDBAPITokenNotFoundException() {

@@ -2,9 +2,9 @@ package com.triviagame.triviagame.database.trivia.opentriviadb;
 
 import com.triviagame.triviagame.AppConfig;
 import com.triviagame.triviagame.AppLogger;
-import com.triviagame.triviagame.database.trivia.TriviaDBException;
+import com.triviagame.triviagame.database.trivia.exception.TriviaDBException;
 import com.triviagame.triviagame.database.trivia.TriviaDBManager;
-import com.triviagame.triviagame.database.trivia.opentriviadb.exception.*;
+import com.triviagame.triviagame.database.trivia.exception.impl.opentriviadbexception.*;
 import com.triviagame.triviagame.model.GameSetupParams;
 import com.triviagame.triviagame.model.TriviaList;
 

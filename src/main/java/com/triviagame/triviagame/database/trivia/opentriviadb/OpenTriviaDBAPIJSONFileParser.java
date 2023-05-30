@@ -3,7 +3,7 @@ package com.triviagame.triviagame.database.trivia.opentriviadb;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.triviagame.triviagame.AppConfig;
 import com.triviagame.triviagame.AppLogger;
-import com.triviagame.triviagame.database.trivia.opentriviadb.exception.*;
+import com.triviagame.triviagame.database.trivia.exception.impl.opentriviadbexception.*;
 import com.triviagame.triviagame.model.TriviaList;
 
 import java.io.File;

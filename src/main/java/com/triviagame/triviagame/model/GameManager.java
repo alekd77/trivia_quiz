@@ -10,6 +10,7 @@ public class GameManager {
     private GameSetupParams gameSetupParams;
     private TriviaList currentTriviaList;
     private int currentScore;
+    private long finalGameTime;
 
     public GameManager(TriviaDBManager triviaDBManager) {
         this.triviaDBManager = triviaDBManager;
@@ -53,5 +54,13 @@ public class GameManager {
 
     public void setCurrentScore(int currentScore) {
         this.currentScore = currentScore;
+    }
+
+    public long getFinalGameTime() {
+        return finalGameTime;
+    }
+
+    public void setFinalGameTime(long finalGameTime) {
+        this.finalGameTime = finalGameTime;
     }
 }

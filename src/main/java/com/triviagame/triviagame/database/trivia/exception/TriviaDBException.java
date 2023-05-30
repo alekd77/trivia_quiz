@@ -1,4 +1,4 @@
-package com.triviagame.triviagame.database.trivia;
+package com.triviagame.triviagame.database.trivia.exception;
 
 public class TriviaDBException extends Exception {
     public TriviaDBException() {

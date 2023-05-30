@@ -1,5 +1,6 @@
 package com.triviagame.triviagame.database.trivia;
 
+import com.triviagame.triviagame.database.trivia.exception.TriviaDBException;
 import com.triviagame.triviagame.model.GameSetupParams;
 import com.triviagame.triviagame.model.TriviaList;
 

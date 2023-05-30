@@ -1,5 +1,6 @@
 package com.triviagame.triviagame.model;
 
+import java.io.IOException;
 import java.util.List;
 
 public class TriviaList {
@@ -41,10 +42,10 @@ public class TriviaList {
         return numberOfLeftTrivia;
     }
 
-    public void loadNextTrivia() {
+    public void loadNextTrivia() throws IOException {
         if (this.triviaList.isEmpty()) {
             if (numberOfLeftTrivia > 0) {
-                throw new RuntimeException("Trivia list is empty");
+                throw new IOException("Trivia list is empty");
             }
         }
 
