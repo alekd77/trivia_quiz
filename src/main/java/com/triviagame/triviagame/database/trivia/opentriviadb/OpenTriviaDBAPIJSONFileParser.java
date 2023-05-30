@@ -8,6 +8,7 @@ import com.triviagame.triviagame.model.TriviaList;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class OpenTriviaDBAPIJSONFileParser {
     public static TriviaList parseTriviaListFromJSONFile(String jsonFile) throws OpenTriviaDBAPIException {
@@ -19,14 +20,11 @@ public class OpenTriviaDBAPIJSONFileParser {
     }
 
     private static JSONResponseFromOpenTriviaDB parseJSONResponseFromTriviaDB(String jsonFileName) {
-        String appResourcesDirPath = AppConfig.getInstance().getAppResourcesDirectoryPath();
-        String jsonFilePath = String.format("%s/%s", appResourcesDirPath, jsonFileName);
-
         try {
-            File jsonFile = new File(jsonFilePath);
+            InputStream inputStream = OpenTriviaDBAPIJSONFileParser.class.getResourceAsStream("/" + jsonFileName);
             ObjectMapper objectMapper = new ObjectMapper();
             JSONResponseFromOpenTriviaDB jsonResponse = objectMapper.readValue(
-                    jsonFile, JSONResponseFromOpenTriviaDB.class);
+                    inputStream, JSONResponseFromOpenTriviaDB.class);
 
             String loggerMessage = String.format("Parsing %s file successful", jsonFileName);
             AppLogger.debug(loggerMessage);

@@ -1,11 +1,13 @@
 package com.triviagame.triviagame;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class AppConfig {
-    private static final String APP_RESOURCES_DIR_PATH = "src/main/resources";
+    private static String APP_RESOURCES_DIR_PATH;
     private static final String INITIAL_CONFIG_FILE = "config.properties";
     private static AppConfig instance;
     private final Properties config;
@@ -39,11 +41,13 @@ public class AppConfig {
     }
 
     private void loadInitConfig() {
-        String initialConfigFilePath = String.format("%s/%s", APP_RESOURCES_DIR_PATH, INITIAL_CONFIG_FILE);
+        //String initialConfigFilePath = String.format("%s/%s", APP_RESOURCES_DIR_PATH, INITIAL_CONFIG_FILE);
+        File file = new File("resources/abc.txt");
+        APP_RESOURCES_DIR_PATH = file.getParentFile().getAbsolutePath();
 
         try {
-            FileInputStream input = new FileInputStream(initialConfigFilePath);
-            this.config.load(input);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(INITIAL_CONFIG_FILE);
+            config.load(inputStream);
 
             String loggerMessage = String.format(
                     "Loading initial configuration from file \"%s\" successful",
