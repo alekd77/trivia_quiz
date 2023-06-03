@@ -2,7 +2,8 @@ package com.triviagame.triviagame.model;
 
 public record GameSetupParams(
         int numberOfQuestions,
-        int category,
+        int categoryID,
         String difficulty,
         String triviaType,
-        String encoding) {}
+        String encoding) {
+}

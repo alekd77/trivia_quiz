@@ -1,6 +1,9 @@
 package com.triviagame.triviagame.model;
 
+import com.triviagame.triviagame.database.trivia.opentriviadb.TriviaDTO;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TriviaList {
@@ -10,8 +13,12 @@ public class TriviaList {
     private int currentTriviaOrdinalNumber;
     private int numberOfLeftTrivia;
 
-    public TriviaList(List<Trivia> triviaList) {
-        this.triviaList = triviaList;
+    public TriviaList(List<TriviaDTO> triviaList) {
+        this.triviaList = new ArrayList<>();
+        for (TriviaDTO dto : triviaList) {
+            this.triviaList.add(new Trivia(dto));
+        }
+
         this.initialNumberOfTrivia = triviaList.size();
         this.currentTrivia = null;
         this.currentTriviaOrdinalNumber = 0;
@@ -50,7 +57,6 @@ public class TriviaList {
         }
 
         this.currentTrivia = this.triviaList.remove(0);
-        this.currentTrivia.shuffleAnswers();
         ++currentTriviaOrdinalNumber;
         --numberOfLeftTrivia;
     }

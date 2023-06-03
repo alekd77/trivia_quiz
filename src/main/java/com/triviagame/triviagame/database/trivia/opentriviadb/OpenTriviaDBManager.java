@@ -1,60 +1,46 @@
 package com.triviagame.triviagame.database.trivia.opentriviadb;
 
 import com.triviagame.triviagame.AppConfig;
-import com.triviagame.triviagame.AppLogger;
-import com.triviagame.triviagame.database.trivia.exception.TriviaDBException;
 import com.triviagame.triviagame.database.trivia.TriviaDBManager;
 import com.triviagame.triviagame.database.trivia.exception.impl.opentriviadbexception.*;
 import com.triviagame.triviagame.model.GameSetupParams;
 import com.triviagame.triviagame.model.TriviaList;
 
-public class OpenTriviaDBManager implements TriviaDBManager {
-    @Override
-    public TriviaList createNewTriviaList(GameSetupParams gameSetupParams) throws TriviaDBException {
-        TriviaList triviaList = null;
+import java.io.IOException;
 
+
+public class OpenTriviaDBManager implements TriviaDBManager {
+    private final SessionTokenHandler sessionTokenHandler;
+    private final TriviaListHandler triviaListHandler;
+
+    public OpenTriviaDBManager() throws IOException {
+        this.sessionTokenHandler = new SessionTokenHandler();
+        this.triviaListHandler = new TriviaListHandler();
+    }
+
+
+    @Override
+    public TriviaList createNewTriviaList(GameSetupParams gameSetupParams) throws IOException {
         try {
             if (AppConfig.getInstance().isDebugModeEnabled()) {
-                triviaList = createOpenTriviaDBTestTriviaList();
-
-            } else {
-                triviaList = createOpenTriviaDBTriviaList();
+                return triviaListHandler.retrieveTestTriviaList();
             }
 
-        } catch (OpenTriviaDBAPINoResultsException | OpenTriviaDBAPIInvalidParameterException ex) {
-            AppLogger.error(ex.getMessage());
-            throw new TriviaDBException(ex.getMessage());
+            return triviaListHandler.retrieveTriviaList(gameSetupParams);
 
+        } catch (OpenTriviaDBAPINoResultsException ex) {
+            throw new IOException("The API doesn't have enough questions for your query." +
+                    " (Ex. Asking for 50 Questions in a Category that only has 20.)");
+        } catch (OpenTriviaDBAPIInvalidParameterException ex) {
+            throw new IOException("Contains an invalid parameter." +
+                    " Arguments passed in aren't valid. (Ex. Amount = Five)");
         } catch (OpenTriviaDBAPITokenNotFoundException ex) {
-            AppLogger.error(ex.getMessage());
-
+            throw new IOException("Session Token does not exist.");
         } catch (OpenTriviaDBAPITokenEmptyException ex) {
-            AppLogger.error(ex.getMessage());
-
+            throw new IOException("Session Token has returned all possible questions for the specified query." +
+                    " Resetting the Token is necessary.");
+        } catch (OpenTriviaDBAPIException ex) {
+            throw new IOException(ex.getMessage());
         }
-
-        if (triviaList == null) {
-            throw new TriviaDBException("Creating new trivia list failed for an unknown reason");
-        }
-
-        String loggerMessage = String.format(
-                "Creating new trivia list successful [Trivia count: %d]",
-                triviaList.getInitialNumberOfTrivia());
-        AppLogger.info(loggerMessage);
-
-        return triviaList;
-    }
-
-    private TriviaList createOpenTriviaDBTestTriviaList() throws OpenTriviaDBAPIException {
-        return OpenTriviaDBAPIJSONFileParser.parseTriviaListFromJSONFile(
-                AppConfig.getInstance().getTestTriviaFile());
-    }
-
-    private TriviaList createOpenTriviaDBTriviaList() throws OpenTriviaDBAPIException {
-        return null;
-    }
-
-    private String prepareOpenTriviaDBAPIURL() {
-        return null;
     }
 }

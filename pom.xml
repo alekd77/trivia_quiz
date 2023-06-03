@@ -58,7 +58,6 @@
             <artifactId>log4j-api</artifactId>
             <version>2.20.0</version>
         </dependency>
-        <!-- Dodatkowe zależności dla tworzenia paczki JAR z zależnościami -->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
@@ -102,7 +101,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Dodatkowe pluginy dla tworzenia paczki JAR z zależnościami -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

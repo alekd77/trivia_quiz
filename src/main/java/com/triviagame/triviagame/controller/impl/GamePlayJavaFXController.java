@@ -3,12 +3,13 @@ package com.triviagame.triviagame.controller.impl;
 import com.triviagame.triviagame.AppLogger;
 import com.triviagame.triviagame.JavaFXAppManager;
 import com.triviagame.triviagame.controller.JavaFXAbstractController;
-import com.triviagame.triviagame.model.Trivia;
 import com.triviagame.triviagame.model.TriviaList;
+import com.triviagame.triviagame.model.Trivia;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -17,8 +18,6 @@ import org.apache.commons.text.StringEscapeUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static com.triviagame.triviagame.model.GameState.PLAYING;
 
 public class GamePlayJavaFXController extends JavaFXAbstractController implements Initializable {
     @FXML
@@ -35,6 +34,8 @@ public class GamePlayJavaFXController extends JavaFXAbstractController implement
     private Label currentScoreLabel;
     @FXML
     private Label elapsedTimeLabel;
+    @FXML
+    private Button nextTriviaButton;
     private final TriviaList currentTriviaList;
     private Trivia currentTrivia;
     private long startTime;
@@ -118,20 +119,68 @@ public class GamePlayJavaFXController extends JavaFXAbstractController implement
         }
     }
 
+    @FXML
     private void onAnswerButtonClick(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
         String selectedAnswer = clickedButton.getText();
-        String correctAnswer = currentTrivia.getCorrectTextAnswer();
+        String correctAnswer = StringEscapeUtils.unescapeHtml4(
+                currentTrivia.getCorrectAnswer());
 
         if (isSelectedAnswerCorrect(selectedAnswer, correctAnswer)) {
             addScore(currentTrivia.getDifficulty());
+            updateCurrentScoreLabel();
+            markCorrectAnswerButton(clickedButton);
+        } else {
+            markWrongAnswerButton(clickedButton);
+            Button correctAnswerButton = getCorrectAnswerButton(correctAnswer);
+
+            if (correctAnswerButton != null) {
+                markCorrectAnswerButton(correctAnswerButton);
+            }
+        }
+
+        for (Node node : triviaAnswerButtonsGridPane.getChildren()) {
+            Button button = (Button) node;
+            button.setDisable(true);
         }
 
         if (isGameFinished) {
             handleGameFinished(event);
         } else {
-            loadNextTrivia();
+            nextTriviaButton.setVisible(true);
+            nextTriviaButton.setDisable(false);
         }
+    }
+
+    @FXML
+    private void onNextTriviaButtonClicked(ActionEvent event) {
+        loadNextTrivia();
+        nextTriviaButton.setVisible(false);
+        nextTriviaButton.setDisable(true);
+
+        for (Node node : triviaAnswerButtonsGridPane.getChildren()) {
+            Button button = (Button) node;
+            button.setDisable(false);
+        }
+    }
+
+    private void markCorrectAnswerButton(Button button) {
+        button.setStyle("-fx-background-color: green;");
+    }
+
+    private void markWrongAnswerButton(Button button) {
+        button.setStyle("-fx-background-color: red;");
+    }
+
+    private Button getCorrectAnswerButton(String correctAnswer) {
+        for (Node node : triviaAnswerButtonsGridPane.getChildren()) {
+            Button button = (Button) node;
+
+            if (button.getText().equals(correctAnswer)) {
+                return button;
+            }
+        }
+        return null; // If no correct answer button is found
     }
 
     private void handleGameFinished(ActionEvent event) {
@@ -181,7 +230,7 @@ public class GamePlayJavaFXController extends JavaFXAbstractController implement
     }
 
     private void updateTriviaCategoryLabel() {
-        String category = "not supported yet";
+        String category = currentTrivia.getCategory();
         String categoryText = String.format("Category: %s", category);
 
         triviaCategoryLabel.setText(categoryText);
