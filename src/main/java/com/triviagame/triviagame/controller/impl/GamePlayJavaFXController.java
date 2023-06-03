@@ -50,9 +50,7 @@ public class GamePlayJavaFXController extends JavaFXAbstractController implement
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadNextTrivia();
-
         startTime = System.currentTimeMillis();
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -72,12 +70,6 @@ public class GamePlayJavaFXController extends JavaFXAbstractController implement
         try {
             currentTriviaList.loadNextTrivia();
             currentTrivia = currentTriviaList.getCurrentTrivia();
-
-            if (currentTriviaList.getNumberOfLeftTrivia() == 0) {
-                isGameFinished = true;
-            } else if (currentTriviaList.getNumberOfLeftTrivia() < 0) {
-                throw new IOException("SOMETHING GONE WRONG");
-            }
 
             updateLabels();
 
@@ -121,6 +113,10 @@ public class GamePlayJavaFXController extends JavaFXAbstractController implement
 
     @FXML
     private void onAnswerButtonClick(ActionEvent event) {
+        if (currentTriviaList.getNumberOfLeftTrivia() == 0) {
+            isGameFinished = true;
+        }
+
         Button clickedButton = (Button) event.getSource();
         String selectedAnswer = clickedButton.getText();
         String correctAnswer = StringEscapeUtils.unescapeHtml4(
@@ -145,22 +141,21 @@ public class GamePlayJavaFXController extends JavaFXAbstractController implement
         }
 
         if (isGameFinished) {
-            handleGameFinished(event);
-        } else {
-            nextTriviaButton.setVisible(true);
-            nextTriviaButton.setDisable(false);
+            nextTriviaButton.setText("Go to summary");
         }
+
+        nextTriviaButton.setVisible(true);
+        nextTriviaButton.setDisable(false);
     }
 
     @FXML
     private void onNextTriviaButtonClicked(ActionEvent event) {
-        loadNextTrivia();
-        nextTriviaButton.setVisible(false);
-        nextTriviaButton.setDisable(true);
-
-        for (Node node : triviaAnswerButtonsGridPane.getChildren()) {
-            Button button = (Button) node;
-            button.setDisable(false);
+        if (isGameFinished) {
+            handleGameFinished(event);
+        } else {
+            loadNextTrivia();
+            nextTriviaButton.setVisible(false);
+            nextTriviaButton.setDisable(true);
         }
     }
 
